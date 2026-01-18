@@ -1,0 +1,19 @@
+coverage:
+  status:
+    project:
+      default:
+        # Disable project-wide coverage checks
+        enabled: false
+    patch:
+      default:
+        # Only check coverage on changed lines
+        enabled: true
+        # Require 80% coverage on changed lines
+        target: 80%
+        # Allow up to 5% threshold below target
+        threshold: 5%
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true

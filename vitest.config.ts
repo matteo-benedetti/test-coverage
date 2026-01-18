@@ -6,8 +6,8 @@ export default defineConfig({
     environment: 'node',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html'],
-      exclude: ['node_modules/', 'vitest.config.ts', 'dist/']
+      reporter: ['text', 'html', 'json', 'lcov'],
+      exclude: ['node_modules/', 'vitest.config.ts', 'dist/', 'tests/']
     }
   }
 });

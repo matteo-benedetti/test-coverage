@@ -13,6 +13,10 @@ interface CreateItemBody {
   name?: string;
 }
 
+interface SearchQuery {
+  name?: string;
+}
+
 const items: Item[] = [
   { id: 1, name: 'Item One' },
   { id: 2, name: 'Item Two' },
@@ -35,6 +39,22 @@ export function buildApp(opts: FastifyServerOptions = {}): FastifyInstance {
   // Get all items
   app.get('/items', async () => {
     return { items };
+  });
+
+  // Search items by name
+  app.get<{ Querystring: SearchQuery }>('/items/search', async (request, reply) => {
+    const { name } = request.query;
+
+    if (!name) {
+      reply.status(400);
+      return { error: 'Name query parameter is required' };
+    }
+
+    const matchingItems = items.filter(item =>
+      item.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    return { items: matchingItems };
   });
 
   // Get item by ID
