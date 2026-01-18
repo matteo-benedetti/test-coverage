@@ -1,6 +1,25 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify';
 
-export function buildApp(opts = {}) {
+interface Item {
+  id: number;
+  name: string;
+}
+
+interface ItemParams {
+  id: string;
+}
+
+interface CreateItemBody {
+  name?: string;
+}
+
+const items: Item[] = [
+  { id: 1, name: 'Item One' },
+  { id: 2, name: 'Item Two' },
+  { id: 3, name: 'Item Three' }
+];
+
+export function buildApp(opts: FastifyServerOptions = {}): FastifyInstance {
   const app = Fastify(opts);
 
   // Health check route
@@ -15,17 +34,11 @@ export function buildApp(opts = {}) {
 
   // Get all items
   app.get('/items', async () => {
-    return {
-      items: [
-        { id: 1, name: 'Item One' },
-        { id: 2, name: 'Item Two' },
-        { id: 3, name: 'Item Three' }
-      ]
-    };
+    return { items };
   });
 
   // Get item by ID
-  app.get('/items/:id', async (request, reply) => {
+  app.get<{ Params: ItemParams }>('/items/:id', async (request, reply) => {
     const { id } = request.params;
     const itemId = parseInt(id, 10);
 
@@ -33,12 +46,6 @@ export function buildApp(opts = {}) {
       reply.status(400);
       return { error: 'Invalid ID format' };
     }
-
-    const items = [
-      { id: 1, name: 'Item One' },
-      { id: 2, name: 'Item Two' },
-      { id: 3, name: 'Item Three' }
-    ];
 
     const item = items.find(i => i.id === itemId);
 
@@ -51,7 +58,7 @@ export function buildApp(opts = {}) {
   });
 
   // Create a new item
-  app.post('/items', async (request, reply) => {
+  app.post<{ Body: CreateItemBody }>('/items', async (request, reply) => {
     const { name } = request.body || {};
 
     if (!name) {
