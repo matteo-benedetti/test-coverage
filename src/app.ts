@@ -13,6 +13,10 @@ interface CreateItemBody {
   name?: string;
 }
 
+interface UpdateItemBody {
+  name?: string;
+}
+
 interface SearchQuery {
   name?: string;
 }
@@ -88,6 +92,33 @@ export function buildApp(opts: FastifyServerOptions = {}): FastifyInstance {
 
     reply.status(201);
     return { id: 4, name };
+  });
+
+  // Update an item
+  app.put<{ Params: ItemParams; Body: UpdateItemBody }>('/items/:id', async (request, reply) => {
+    const { id } = request.params;
+    const { name } = request.body || {};
+    const itemId = parseInt(id, 10);
+
+    if (isNaN(itemId)) {
+      reply.status(400);
+      return { error: 'Invalid ID format' };
+    }
+
+    const itemIndex = items.findIndex(i => i.id === itemId);
+
+    if (itemIndex === -1) {
+      reply.status(404);
+      return { error: 'Item not found' };
+    }
+
+    if (!name) {
+      reply.status(400);
+      return { error: 'Name is required' };
+    }
+
+    items[itemIndex].name = name;
+    return items[itemIndex];
   });
 
   return app;
