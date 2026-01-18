@@ -14,6 +14,11 @@ coverage:
         threshold: 5%
 
 comment:
-  layout: "reach,diff,flags,files"
+  # Layout focusing on changed lines coverage
+  layout: "header,diff,files,footer"
+  # Always post/update comment
   behavior: default
+  # Only comment when there are code changes
   require_changes: true
+  # Show coverage for changed files
+  hide_project_coverage: true
