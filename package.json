@@ -1,0 +1,23 @@
+{
+  "name": "fastify-vitest-app",
+  "version": "1.0.0",
+  "description": "A basic Fastify application with Vitest tests",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": ["fastify", "vitest", "api"],
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.4",
+    "@vitest/coverage-v8": "^3.0.4"
+  }
+}
+
