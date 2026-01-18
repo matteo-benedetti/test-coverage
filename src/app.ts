@@ -102,7 +102,7 @@ export function buildApp(opts: FastifyServerOptions = {}): FastifyInstance {
 
     if (isNaN(itemId)) {
       reply.status(400);
-      return { error: 'Invalid ID format' };
+      return { error: 'Invalid ID' };
     }
 
     const itemIndex = items.findIndex(i => i.id === itemId);
