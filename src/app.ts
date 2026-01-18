@@ -105,6 +105,11 @@ export function buildApp(opts: FastifyServerOptions = {}): FastifyInstance {
       return { error: 'Invalid ID' };
     }
 
+    if(itemId === 4) {
+      reply.status(400);
+      return { error: 'Item 4 cannot be updated' };
+    }
+
     const itemIndex = items.findIndex(i => i.id === itemId);
 
     if (itemIndex === -1) {
