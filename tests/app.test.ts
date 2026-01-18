@@ -108,5 +108,29 @@ describe('Fastify App', () => {
       expect(response.json()).toEqual({ error: 'Name is required' });
     });
   });
+
+  describe('PUT /items/:id', () => {
+    it('should return 400 for invalid ID format', async () => {
+      const response = await app.inject({
+        method: 'PUT',
+        url: '/items/abc',
+        payload: { name: 'Updated Item' }
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toEqual({ error: 'Invalid ID' });
+    });
+
+    it('should return 400 when updating item 4', async () => {
+      const response = await app.inject({
+        method: 'PUT',
+        url: '/items/4',
+        payload: { name: 'Updated Item' }
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json()).toEqual({ error: 'Item 4 cannot be updated' });
+    });
+  });
 });
 
